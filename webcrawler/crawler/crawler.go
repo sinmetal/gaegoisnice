@@ -35,7 +35,7 @@ func crawlHandler(c appengine.Context, w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	root := crawl(c, u, depth-1)
+	root := Crawl(c, u, depth-1)
 
 	b, err := json.Marshal(root)
 	if err != nil {
@@ -47,7 +47,7 @@ func crawlHandler(c appengine.Context, w http.ResponseWriter, r *http.Request) {
 	w.Write(b)
 }
 
-func crawl(c appengine.Context, aUrl string, depth int) *Tree {
+func Crawl(c appengine.Context, aUrl string, depth int) *Tree {
 	c.Infof("crawling! depth: %d", depth)
 
 	client := urlfetch.Client(c)
@@ -98,7 +98,7 @@ func crawl(c appengine.Context, aUrl string, depth int) *Tree {
 
 						var child *Tree
 						if depth > 0 {
-							child = crawl(c, childUrl, depth-1)
+							child = Crawl(c, childUrl, depth-1)
 						} else {
 							child = &Tree{Url: childUrl}
 						}
